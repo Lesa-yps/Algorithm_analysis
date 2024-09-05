@@ -1,0 +1,16 @@
+\babel@toc {russian}{}\relax 
+\contentsline {section}{\numberline {1}Аналитическая часть}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Редакционное расстояние между двумя строками}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Выравнивание строк}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Расстояние Левенштейна}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Расстояние Дамерау-Левенштейна}{5}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Конструкторская часть}{6}{section.2}%
+\contentsline {section}{\numberline {3}Технологическая часть}{13}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Требования к программному обеспечению}{13}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Средства реализации}{13}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Реализации алгоритмов}{13}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Тесты}{15}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Исследовательская часть}{17}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Сравнение работы матричной, рекурсивной и рекурсивно-матричной реализаций алгоритмов}{18}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Сравнение работы алгоритмов Левенштейна и Дамерау-Левенштейна}{18}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Сравнение работы матричных и рекурсивно-матричных алгоритмов Левенштейна и Дамерау-Левенштейна}{21}{subsection.4.3}%
