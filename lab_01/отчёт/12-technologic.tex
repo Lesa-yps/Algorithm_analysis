@@ -1,10 +1,22 @@
 \section{Технологическая часть}
 \subsection{Требования к программному обеспечению}
-На вход программе подаются 2 строки из символов, которые входят в таблицу Юникода (UTF-8).\par
+
+\hspace{1.25cm}
+На вход программе подаются 2 строки из символов, которые входят в таблицу Юникода (UTF-8).
+
 На выход программа выдаёт число – расстояние между строками, вычисленное алгоритмом Левенштейна или Дамерау-Левенштейна матричной или рекурсивной реализацией. Для матричных реализаций также выводится матрица расстояний. Также в зависимости от выбранного пункта меню программа замеряет время работы алгоритмов и рисует получившиеся графики.
+
 \subsection{Средства реализации}
+
+\hspace{1.25cm}
 Python эффективно обработывает строки и имеет богатую библиотеку, поэтому программа была реализована на этом языке программирования. Для замеров времени была использована функция \texttt{process\_time()} из библиотеки \texttt{time}, вычисляющая процессорное время\cite{process_time}.
+
 \subsection{Реализации алгоритмов}
+
+\hspace{1.25cm}
+Ниже приведены листинги реализаций алгоритмов поиска расстояния Левенштейна и Дамерау-Левенштейна матричным, рекурсивным и рекурсивно-матричным способами на Python.
+
+\vspace{0.25cm}
 \begin{lstlisting}[caption=реализация матричного алгоритма Левенштейна]
 def algo_Levenstein_matrix(str1: str, str2: str) -> int:
     len1, len2 = len(str1) + 1, len(str2) + 1
@@ -22,6 +34,8 @@ def algo_Levenstein_matrix(str1: str, str2: str) -> int:
         old_str = cur_str.copy()
     return cur_str[-1]
 \end{lstlisting}
+
+\vspace{0.25cm}
 \begin{lstlisting}[caption=реализация рекурсивного алгоритма Левенштейна]
 def algo_Levenstein_recursion(str1: str, str2: str) -> int:
     len1, len2 = len(str1), len(str2)
@@ -31,6 +45,8 @@ def algo_Levenstein_recursion(str1: str, str2: str) -> int:
                 algo_Levenstein_recursion(str1[:-1], str2) + 1,
                 algo_Levenstein_recursion(str1[:-1], str2[:-1]) + (str1[-1] != str2[-1]))
 \end{lstlisting}
+
+\vspace{0.25cm}
 \begin{lstlisting}[caption=реализация рекурсивно-матричного алгоритма Левенштейна]
 def algo_Levenstein_recursion_matrix(str1: str, str2: str) -> int:
     len1, len2 = len(str1) + 1, len(str2) + 1
@@ -49,6 +65,8 @@ def algo_Levenstein_recursion_matrix(str1: str, str2: str) -> int:
         return mat[len1][len2]
     return recursion_part(str1, str2, mat)
 \end{lstlisting}
+
+\vspace{0.25cm}
 \begin{lstlisting}[caption=реализация матричного алгоритма Дамерау-Левенштейна]
 def algo_Damerau_Levenstein_matrix(str1: str, str2: str) -> int:
     len1, len2 = len(str1) + 1, len(str2) + 1
@@ -69,6 +87,8 @@ def algo_Damerau_Levenstein_matrix(str1: str, str2: str) -> int:
         old_str = cur_str.copy()
     return cur_str[-1]
 \end{lstlisting}
+
+\vspace{0.25cm}
 \begin{lstlisting}[caption=реализация рекурсивного алгоритма Дамерау-Левенштейна]
 def algo_Damerau_Levenstein_recursion(str1: str, str2: str) -> int:
     len1, len2 = len(str1), len(str2)
@@ -81,6 +101,8 @@ def algo_Damerau_Levenstein_recursion(str1: str, str2: str) -> int:
         res = min(res, algo_Damerau_Levenstein_recursion(str1[:-2], str2[:-2]) + 1)
     return res
 \end{lstlisting}
+
+\vspace{0.25cm}
 \begin{lstlisting}[caption=реализация рекурсивно-матричного алгоритма Дамерау-Левенштейна]
 def algo_Damerau_Levenstein_recursion_matrix(str1: str, str2: str) -> int:
     len1, len2 = len(str1) + 1, len(str2) + 1
@@ -101,7 +123,12 @@ def algo_Damerau_Levenstein_recursion_matrix(str1: str, str2: str) -> int:
         return mat[len1][len2]
     return recursion_part(str1, str2, mat)
 \end{lstlisting}
+
+\vspace{0.25cm}
 \subsection{Тесты}
+
+Для тестирования алгоритмов Левенштейна и Дамерау-Левенштейна были составлены таблицы с входными данными (2 строки, возможно, пустые - $\lambda$), ожидаемым результатом (расстоянием) и полученным результатом от всех трёх способов.
+
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|}
@@ -124,6 +151,7 @@ def algo_Damerau_Levenstein_recursion_matrix(str1: str, str2: str) -> int:
     \end{tabular}
     \caption{Таблица тестов для алгоритмов Левенштейна}
 \end{table}
+
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|}
@@ -146,10 +174,14 @@ def algo_Damerau_Levenstein_recursion_matrix(str1: str, str2: str) -> int:
     \end{tabular}
     \caption{Таблица тестов для алгоритмов Дамерау-Левенштейна}
 \end{table}
-В ходе проведённого тестирования (с помощью pytest) ошибок в алгоритмах не выявлено:\\[0.1cm]
+
+В ходе проведённого тестирования (с помощью pytest) ошибок в алгоритмах не выявлено (см. Рис.~\ref{fig:pytest_result}).\\[0.1cm]
+
 \begin{figure}[H]  % Принудительное размещение изображения
     \centering
     \includegraphics[width=1\textwidth]{img/pytest_result.png}
     \caption{Результаты тестов с использованием pytest}
+    \label{fig:pytest_result} % Метка для ссылки на картинку
 \end{figure}
+
 \newpage
