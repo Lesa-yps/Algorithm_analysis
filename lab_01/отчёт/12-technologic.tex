@@ -9,15 +9,15 @@
 \subsection{Средства реализации}
 
 \hspace{1.25cm}
-Python эффективно обработывает строки и имеет богатую библиотеку, поэтому программа была реализована на этом языке программирования. Для замеров времени была использована функция \texttt{process\_time()} из библиотеки \texttt{time}, вычисляющая процессорное время\cite{process_time}.
+Python эффективно обработывает строки, поэтому программа была реализована на этом языке программирования. Для замеров времени была использована функция \texttt{process\_time()} из библиотеки \texttt{time}, вычисляющая процессорное время \cite{process_time}.
 
 \subsection{Реализации алгоритмов}
 
 \hspace{1.25cm}
-Ниже приведены листинги реализаций алгоритмов поиска расстояния Левенштейна и Дамерау-Левенштейна матричным, рекурсивным и рекурсивно-матричным способами на Python.
+Ниже приведены реализации алгоритмов поиска расстояния Левенштейна (листинги \ref{lst:levenshtein_matrix}, \ref{lst:levenshtein_recursive} и \ref{lst:levenshtein_recursive_matrix}) и Дамерау-Левенштейна (листинги \ref{lst:damerau_levenshtein_matrix}, \ref{lst:damerau_levenshtein_recursive} и \ref{lst:damerau_levenstein_recursive_matrix}) матричным, рекурсивным и рекурсивно-матричным способами на Python.
 
 \vspace{0.25cm}
-\begin{lstlisting}[caption=реализация матричного алгоритма Левенштейна]
+\begin{lstlisting}[caption=реализация матричного алгоритма Левенштейна, label=lst:levenshtein_matrix]
 def algo_Levenstein_matrix(str1: str, str2: str) -> int:
     len1, len2 = len(str1) + 1, len(str2) + 1
     if len2 > len1:
@@ -36,7 +36,7 @@ def algo_Levenstein_matrix(str1: str, str2: str) -> int:
 \end{lstlisting}
 
 \vspace{0.25cm}
-\begin{lstlisting}[caption=реализация рекурсивного алгоритма Левенштейна]
+\begin{lstlisting}[caption=реализация рекурсивного алгоритма Левенштейна, label=lst:levenshtein_recursive]
 def algo_Levenstein_recursion(str1: str, str2: str) -> int:
     len1, len2 = len(str1), len(str2)
     if len1 * len2 == 0:
@@ -47,7 +47,7 @@ def algo_Levenstein_recursion(str1: str, str2: str) -> int:
 \end{lstlisting}
 
 \vspace{0.25cm}
-\begin{lstlisting}[caption=реализация рекурсивно-матричного алгоритма Левенштейна]
+\begin{lstlisting}[caption=реализация рекурсивно-матричного алгоритма Левенштейна, label=lst:levenshtein_recursive_matrix]
 def algo_Levenstein_recursion_matrix(str1: str, str2: str) -> int:
     len1, len2 = len(str1) + 1, len(str2) + 1
     mat = [[float("-inf") for i in range(len2)] for j in range(len1)]
@@ -67,7 +67,7 @@ def algo_Levenstein_recursion_matrix(str1: str, str2: str) -> int:
 \end{lstlisting}
 
 \vspace{0.25cm}
-\begin{lstlisting}[caption=реализация матричного алгоритма Дамерау-Левенштейна]
+\begin{lstlisting}[caption=реализация матричного алгоритма Дамерау-Левенштейна, label=lst:damerau_levenshtein_matrix]
 def algo_Damerau_Levenstein_matrix(str1: str, str2: str) -> int:
     len1, len2 = len(str1) + 1, len(str2) + 1
     if len2 > len1:
@@ -89,7 +89,7 @@ def algo_Damerau_Levenstein_matrix(str1: str, str2: str) -> int:
 \end{lstlisting}
 
 \vspace{0.25cm}
-\begin{lstlisting}[caption=реализация рекурсивного алгоритма Дамерау-Левенштейна]
+\begin{lstlisting}[caption=реализация рекурсивного алгоритма Дамерау-Левенштейна, label=lst:damerau_levenshtein_recursive]
 def algo_Damerau_Levenstein_recursion(str1: str, str2: str) -> int:
     len1, len2 = len(str1), len(str2)
     if len1 * len2 == 0:
@@ -103,8 +103,8 @@ def algo_Damerau_Levenstein_recursion(str1: str, str2: str) -> int:
 \end{lstlisting}
 
 \vspace{0.25cm}
-\begin{lstlisting}[caption=реализация рекурсивно-матричного алгоритма Дамерау-Левенштейна]
-def algo_Damerau_Levenstein_recursion_matrix(str1: str, str2: str) -> int:
+\begin{lstlisting}[caption=реализация рекурсивно-матричного алгоритма Дамерау-Левенштейна, label=lst:damerau_levenstein_recursive_matrix]
+def algo_Damerau_Levenshtein_recursion_matrix(str1: str, str2: str) -> int:
     len1, len2 = len(str1) + 1, len(str2) + 1
     mat = [[float("inf") for i in range(len2)] for j in range(len1)]
     # the recursive part itself
@@ -123,6 +123,7 @@ def algo_Damerau_Levenstein_recursion_matrix(str1: str, str2: str) -> int:
         return mat[len1][len2]
     return recursion_part(str1, str2, mat)
 \end{lstlisting}
+
 
 \vspace{0.25cm}
 \subsection{Тесты}
@@ -175,13 +176,20 @@ def algo_Damerau_Levenstein_recursion_matrix(str1: str, str2: str) -> int:
     \caption{Таблица тестов для алгоритмов Дамерау-Левенштейна}
 \end{table}
 
-В ходе проведённого тестирования (с помощью pytest) ошибок в алгоритмах не выявлено (см. Рис.~\ref{fig:pytest_result}).\\[0.1cm]
+В ходе проведённого тестирования (с помощью pytest) ошибок в алгоритмах не выявлено:
 
-\begin{figure}[H]  % Принудительное размещение изображения
-    \centering
-    \includegraphics[width=1\textwidth]{img/pytest_result.png}
-    \caption{Результаты тестов с использованием pytest}
-    \label{fig:pytest_result} % Метка для ссылки на картинку
-\end{figure}
+\vspace{0.25cm}
+\begin{lstlisting}[caption=тестирование алгоритмов с помощью pytest]
+pytest
+======================== test session starts ========================
+platform win32 -- Python 3.11.9, pytest-8.2.2, pluggy-1.5.0
+rootdir: L:\sem_5\\Algorithm_analysis\lab_01
+plugins: Faker-28.4.1
+collected 72 items                                                                                                                                                                
+
+test_algo.py .....................................             [100%]
+
+======================== 72 passed in 0.69s =========================
+\end{lstlisting}
 
 \newpage

@@ -134,9 +134,9 @@ def algo_Damerau_Levenstein_recursion_matrix(str1: str, str2: str, output: bool 
     return recursion_part(str1, str2, mat)
     
 
-algo_list = [(algo_Levenstein_matrix, "Алгоритм Левенштейна\n(матричная реализация)"),
-             (algo_Levenstein_recursion, "Алгоритм Левенштейна\n(рекурсивная реализация)"),
-             (algo_Levenstein_recursion_matrix, "Алгоритм Левенштейна\n(рекурсивно-матричная реализация)"),
-             (algo_Damerau_Levenstein_matrix, "Алгоритм Дамерау-Левенштейна\n(матричная реализация)"),
-             (algo_Damerau_Levenstein_recursion, "Алгоритм Дамерау-Левенштейна\n(рекурсивная реализация)"),
-             (algo_Damerau_Levenstein_recursion_matrix, "Алгоритм Дамерау-Левенштейна\n(рекурсивно-матричная реализация)")]
+algo_list = [(algo_Levenstein_matrix, "r", "Алгоритм Левенштейна\n(матричная реализация)"),
+             (algo_Levenstein_recursion, "g", "Алгоритм Левенштейна\n(рекурсивная реализация)"),
+             (algo_Levenstein_recursion_matrix, "b", "Алгоритм Левенштейна\n(рекурсивно-матричная реализация)"),
+             (algo_Damerau_Levenstein_matrix, "k", "Алгоритм Дамерау-Левенштейна\n(матричная реализация)"),
+             (algo_Damerau_Levenstein_recursion, "m", "Алгоритм Дамерау-Левенштейна\n(рекурсивная реализация)"),
+             (algo_Damerau_Levenstein_recursion_matrix, "c", "Алгоритм Дамерау-Левенштейна\n(рекурсивно-матричная реализация)")]

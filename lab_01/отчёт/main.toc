@@ -1,4 +1,6 @@
 \babel@toc {russian}{}\relax 
+\contentsline {section}{{\cyrillictext \CYRS \cyro \cyrd \cyre \cyrr \cyrzh \cyra \cyrn \cyri \cyre }}{2}{Doc-Start}%
+\contentsline {section}{Введение}{3}{Doc-Start}%
 \contentsline {section}{\numberline {1}Аналитическая часть}{4}{section.1}%
 \contentsline {subsection}{\numberline {1.1}Редакционное расстояние между двумя строками}{4}{subsection.1.1}%
 \contentsline {subsection}{\numberline {1.2}Выравнивание строк}{4}{subsection.1.2}%
@@ -13,4 +15,6 @@
 \contentsline {section}{\numberline {4}Исследовательская часть}{26}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Сравнение работы матричной, рекурсивной и рекурсивно-матричной реализаций алгоритмов}{27}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Сравнение работы алгоритмов Левенштейна и Дамерау-Левенштейна (отдельно каждый способ)}{27}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Сравнение работы матричных и рекурсивно-матричных алгоритмов Левенштейна и Дамерау-Левенштейна}{31}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.3}Сравнение работы матричных и рекурсивно-матричных алгоритмов Левенштейна и Дамерау-Левенштейна}{30}{subsection.4.3}%
+\contentsline {section}{Заключение}{33}{table.caption.25}%
+\contentsline {section}{Список использованных источников}{34}{table.caption.25}%

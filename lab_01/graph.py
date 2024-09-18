@@ -36,7 +36,7 @@ def build_time_graph_one_algo(algo_test: Tuple[any], start_len_str: int = DEF_TE
         x_arr.append(size_str)
         y_arr.append(res_time)
     # Строим график
-    plt.plot(x_arr, y_arr, label = algo_test[-1], marker = '*')
+    plt.plot(x_arr, y_arr, label = algo_test[-1], color = algo_test[1], marker = '*')
     return y_arr
 
 # вызов функции замеряющей времени работы алгоритмов и отрисовка графика
