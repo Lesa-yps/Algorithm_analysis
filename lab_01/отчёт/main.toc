@@ -1,5 +1,4 @@
 \babel@toc {russian}{}\relax 
-\contentsline {section}{{\cyrillictext \CYRS \cyro \cyrd \cyre \cyrr \cyrzh \cyra \cyrn \cyri \cyre }}{2}{Doc-Start}%
 \contentsline {section}{Введение}{3}{Doc-Start}%
 \contentsline {section}{\numberline {1}Аналитическая часть}{4}{section.1}%
 \contentsline {subsection}{\numberline {1.1}Редакционное расстояние между двумя строками}{4}{subsection.1.1}%
