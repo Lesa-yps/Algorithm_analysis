@@ -1,0 +1,36 @@
+Testing Levenshtein algorithm (matrix implementation)...
+Len string: 1, Time: 0.0001 sec
+Len string: 2, Time: 0.0002 sec
+Len string: 3, Time: 0.0003 sec
+Len string: 4, Time: 0.0005 sec
+Len string: 5, Time: 0.0007 sec
+Testing Levenshtein algorithm (recursive matrix implementation)...
+Len string: 1, Time: 0.0003 sec
+Len string: 2, Time: 0.0007 sec
+Len string: 3, Time: 0.0015 sec
+Len string: 4, Time: 0.0027 sec
+Len string: 5, Time: 0.0042 sec
+Testing Damerau-Levenstein algorithm (matrix implementation)...
+Len string: 1, Time: 0.0001 sec
+Len string: 2, Time: 0.0002 sec
+Len string: 3, Time: 0.0004 sec
+Len string: 4, Time: 0.0006 sec
+Len string: 5, Time: 0.0009 sec
+Testing Damerau-Levenshtein algorithm (recursively-matrix implementation)...
+Len string: 1, Time: 0.0003 sec
+Len string: 2, Time: 0.0007 sec
+Len string: 3, Time: 0.0016 sec
+Len string: 4, Time: 0.0029 sec
+Len string: 5, Time: 0.0045 sec
+Testing Levenshtein algorithm (recursive implementation)...
+Len string: 1, Time: 0.0001 sec
+Len string: 2, Time: 0.0005 sec
+Len string: 3, Time: 0.0027 sec
+Len string: 4, Time: 0.0140 sec
+Len string: 5, Time: 0.0732 sec
+Testing Damerau-Levenstein algorithm (recursive implementation)...
+Len string: 1, Time: 0.0001 sec
+Len string: 2, Time: 0.0006 sec
+Len string: 3, Time: 0.0030 sec
+Len string: 4, Time: 0.0152 sec
+Len string: 5, Time: 0.0792 sec

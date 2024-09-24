@@ -8,8 +8,8 @@ from graph import build_time_graph_all_algo, run_func_make_params
 from work_mat import read_two_mat, output_mat
 
 
-DEF_TEST_SIZE_MAT_EVEN = (10, 100, 10)
-DEF_TEST_SIZE_MAT_ODD = (15, 105, 10)
+DEF_TEST_SIZE_MAT_EVEN = (50, 250, 50)
+DEF_TEST_SIZE_MAT_ODD = (51, 251, 50)
 
 
 # запуск функции с параметрами и вывод результата c поясняющей строкой

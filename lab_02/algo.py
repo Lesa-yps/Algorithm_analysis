@@ -60,9 +60,9 @@ def algo_matrix_mult_Vinograd_better(A: List[List[int]], B: List[List[int]]) -> 
     return C, err_code
     
 
-algo_list = [(algo_matrix_mult_standard, "Стандартный алгоритм"),
-             (algo_matrix_mult_Vinograd, "Алгоритм Винограда"),
-             (algo_matrix_mult_Vinograd_better, "Алгоритм Винограда\n(оптимизированный)")]
+algo_list = [(algo_matrix_mult_standard, "r", "Стандартный алгоритм"),
+             (algo_matrix_mult_Vinograd, "g", "Алгоритм Винограда"),
+             (algo_matrix_mult_Vinograd_better, "b", "Алгоритм Винограда\n(оптимизированный)")]
 
 
 # Пример работы

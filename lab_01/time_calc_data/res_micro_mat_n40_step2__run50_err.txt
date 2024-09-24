@@ -1,0 +1,40 @@
+Testing Levenshtein algorithm (matrix implementation)...
+Len string: 2, Time: 0.0002 sec
+Len string: 4, Time: 0.0005 sec
+Len string: 6, Time: 0.0010 sec
+Len string: 8, Time: 0.0016 sec
+Len string: 10, Time: 0.0025 sec
+Len string: 12, Time: 0.0035 sec
+Len string: 14, Time: 0.0047 sec
+Len string: 16, Time: 0.0061 sec
+Len string: 18, Time: 0.0078 sec
+Len string: 20, Time: 0.0096 sec
+Len string: 22, Time: 0.0115 sec
+Len string: 24, Time: 0.0137 sec
+Len string: 26, Time: 0.0161 sec
+Len string: 28, Time: 0.0187 sec
+Len string: 30, Time: 0.0215 sec
+Len string: 32, Time: 0.0245 sec
+Len string: 34, Time: 0.0277 sec
+Len string: 36, Time: 0.0313 sec
+Len string: 38, Time: 0.0348 sec
+Len string: 40, Time: 0.0386 sec
+Testing Levenshtein algorithm (recursive matrix implementation)...
+Len string: 2, Time: 0.0007 sec
+Len string: 4, Time: 0.0027 sec
+Len string: 6, Time: 0.0061 sec
+Len string: 8, Time: 0.0110 sec
+Len string: 10, Time: 0.0172 sec
+Len string: 12, Time: 0.0250 sec
+Len string: 14, Time: 0.0342 sec
+Len string: 16, Time: 0.0451 sec
+Len string: 18, Time: 0.0574 sec
+Len string: 20, Time: 0.0715 sec
+Len string: 22, Time: 0.0871 sec
+Len string: 24, Time: 0.1043 sec
+Len string: 26, Time: 0.1229 sec
+Len string: 28, Time: 0.1430 sec
+Len string: 30, Time: 0.1651 sec
+Len string: 32, Time: 0.1894 sec
+
+ampy.pyboard.PyboardError: timeout waiting for first EOF reception

@@ -1,0 +1,45 @@
+Testing Levenshtein algorithm (matrix implementation)...
+Len string: 5, Time: 0.0007 sec
+Len string: 10, Time: 0.0023 sec
+Len string: 15, Time: 0.0053 sec
+Len string: 20, Time: 0.0095 sec
+Len string: 25, Time: 0.0148 sec
+Len string: 30, Time: 0.0212 sec
+Len string: 35, Time: 0.0293 sec
+Len string: 40, Time: 0.0386 sec
+Len string: 45, Time: 0.0490 sec
+Len string: 50, Time: 0.0613 sec
+Testing Levenshtein algorithm (recursive matrix implementation)...
+Len string: 5, Time: 0.0041 sec
+Len string: 10, Time: 0.0173 sec
+Len string: 15, Time: 0.0394 sec
+Len string: 20, Time: 0.0716 sec
+Len string: 25, Time: 0.1135 sec
+Len string: 30, Time: 0.1650 sec
+Len string: 35, Time: 0.2284 sec
+Len string: 40, Time: 0.3029 sec
+Len string: 45, Time: 0.3880 sec
+Len string: 50, Time: 0.4936 sec
+Testing Damerau-Levenstein algorithm (matrix implementation)...
+Len string: 5, Time: 0.0009 sec
+Len string: 10, Time: 0.0036 sec
+Len string: 15, Time: 0.0082 sec
+Len string: 20, Time: 0.0145 sec
+Len string: 25, Time: 0.0226 sec
+Len string: 30, Time: 0.0331 sec
+Len string: 35, Time: 0.0455 sec
+Len string: 40, Time: 0.0607 sec
+Len string: 45, Time: 0.0779 sec
+Len string: 50, Time: 0.0969 sec
+Testing Damerau-Levenshtein algorithm (recursively-matrix implementation)...
+Len string: 5, Time: 0.0045 sec
+Len string: 10, Time: 0.0188 sec
+Len string: 15, Time: 0.0429 sec
+Len string: 20, Time: 0.0782 sec
+Len string: 25, Time: 0.1248 sec
+Len string: 30, Time: 0.1815 sec
+Len string: 35, Time: 0.2509 sec
+Len string: 40, Time: 0.3316 sec
+Len string: 45, Time: 0.4258 sec
+
+ampy.pyboard.PyboardError: timeout waiting for first EOF reception

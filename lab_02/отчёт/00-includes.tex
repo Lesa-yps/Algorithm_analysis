@@ -4,7 +4,8 @@
 
 % Пакеты для поддержки кириллицы
 \usepackage[utf8]{inputenc}    % Кодировка UTF-8
-\usepackage[T2A]{fontenc}      % Поддержка кириллицы
+\usepackage{cmap} % Улучшенный поиск русских слов в полученном pdf-файле
+\usepackage[T2A]{fontenc} % Поддержка русских букв
 \usepackage[english,russian]{babel} % Русский и английский языки
 \usepackage{mathptmx}          % Используем шрифт Times New Roman вместо Computer Modern
 
@@ -17,6 +18,15 @@
 \usepackage{hyperref}          % Ссылки
 \usepackage{titlesec}          % Для оформления заголовков разделов
 \usepackage{xcolor}			  % Цвета
+
+\usepackage{amsmath, amssymb, amsthm}  % Подключение пакетов для математики и теорем
+
+% Определение стиля окружения "definition"
+\newtheorem{definition}{Определение}
+
+% Отключаем добавление библиографии и содержания в оглавление
+\usepackage[notbib,nottoc]{tocbibind}
+
 
 \usepackage{longtable} % Для длинных таблиц, если нужно
 \usepackage{array}     % Для улучшенного контроля над таблицами
@@ -39,6 +49,16 @@
 \titleformat{\section}{\large\bfseries}{\thesection.}{1em}{}
 \titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{1em}{}
 
+\usepackage{caption} % Для настройки подписей
+\captionsetup[figure]{justification=centering} % Центрирование подписей к рисункам
+% Изменяем текст "Рис." на "Рисунок"
+\addto\captionsrussian{\renewcommand{\figurename}{Рисунок}}
+% Настраиваем разделитель с ":" на " -"
+\captionsetup[figure]{labelsep=endash} % Используем длинное тире для разделителя
+
+% Настройка внешнего вида подписей таблиц
+\captionsetup[table]{justification=centering, labelsep=endash} % Центрируем и используем тире вместо двоеточия
+
 % Для кода
 \usepackage{listings}
 % Настройка стиля для кода
@@ -54,5 +74,14 @@
     keywordstyle=\color{blue}, % Стиль ключевых слов
     stringstyle=\color{red},   % Стиль строк
     showstringspaces=false,    % Не отображать пробелы в строках
-    numberstyle=\tiny\color{gray} % Стиль номеров строк
+    numbers=left, % Нумерация строк слева
+    numberstyle=\tiny\color{gray}, % Стиль нумерации строк
+    stepnumber=1, % Шаг нумерации строк
+    numbersep=5pt, % Расстояние между нумерацией и текстом
+    breaklines=true, % Перенос длинных строк
+    aboveskip=1em, % Расстояние выше листинга
+    belowskip=1em, % Расстояние ниже листинга
 }
+
+% Изменяем разделитель в подписях
+\captionsetup[lstlisting]{labelsep=endash} % Используем длинное тире
