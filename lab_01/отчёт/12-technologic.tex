@@ -129,11 +129,12 @@ def algo_Damerau_Levenshtein_recursion_matrix(str1: str, str2: str) -> int:
 \subsection{Тесты}
 
 \hspace{1.25cm}
-Для тестирования алгоритмов Левенштейна и Дамерау-Левенштейна были составлены таблицы с входными данными (2 строки, возможно, пустые - $\lambda$), ожидаемым результатом (расстоянием) и полученным результатом от всех трёх способов.
+Для тестирования алгоритмов Левенштейна и Дамерау-Левенштейна были составлены таблицы (для алгоритмов Левенштейна таблица \ref{table:Levenshtein} и для Дамерау-Левенштейна \ref{table:Damerau-Levenshtein}) с входными данными (2 строки, возможно, пустые - $\lambda$), ожидаемым результатом (расстоянием) и полученным результатом от всех трёх способов.
 
 \vspace{0.25cm}
 \begin{table}[H]
     \centering
+    \caption{Таблица тестов для алгоритмов Левенштейна}
     \begin{tabular}{|c|c|c|c|c|c|}
         \hline
         \textbf{Строка 1} & \textbf{Строка 2} & \textbf{Ожидание} & \textbf{матричный} & \textbf{рекурсивный} & \makecell{\textbf{рекурсивно-}\\\textbf{матричный}} \\
@@ -152,11 +153,12 @@ def algo_Damerau_Levenshtein_recursion_matrix(str1: str, str2: str) -> int:
         bac & abc & 2 & 2 & 2 & 2 \\
         \hline
     \end{tabular}
-    \caption{Таблица тестов для алгоритмов Левенштейна}
+    \label{table:Levenshtein}
 \end{table}
 
 \begin{table}[H]
     \centering
+    \caption{Таблица тестов для алгоритмов Дамерау-Левенштейна}
     \begin{tabular}{|c|c|c|c|c|c|}
         \hline
         \textbf{Строка 1} & \textbf{Строка 2} & \textbf{Ожидание} & \textbf{матричный} & \textbf{рекурсивный} & \makecell{\textbf{рекурсивно-}\\\textbf{матричный}} \\
@@ -175,7 +177,7 @@ def algo_Damerau_Levenshtein_recursion_matrix(str1: str, str2: str) -> int:
         bac & abc & 1 & 1 & 1 & 1 \\
         \hline
     \end{tabular}
-    \caption{Таблица тестов для алгоритмов Дамерау-Левенштейна}
+    \label{table:Damerau-Levenshtein}
 \end{table}
 
 В ходе проведённого тестирования (с помощью pytest) ошибок в алгоритмах не выявлено:

@@ -1,0 +1,16 @@
+\babel@toc {russian}{}\relax 
+\contentsline {section}{Введение}{3}{Doc-Start}%
+\contentsline {section}{\numberline {1}Аналитическая часть}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Алгоритм линейного поиска}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Алгоритм бинарного поиска}{5}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Сортировка}{7}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Конструкторская часть}{10}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Описания алгоритмов}{10}{subsection.2.1}%
+\contentsline {section}{\numberline {3}Технологическая часть}{12}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Требования к программному обеспечению}{12}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Средства реализации}{12}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Реализации алгоритмов}{12}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Тесты}{13}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Исследовательская часть}{14}{section.4}%
+\contentsline {section}{Заключение}{18}{figure.caption.6}%
+\contentsline {section}{Список использованных источников}{19}{figure.caption.6}%

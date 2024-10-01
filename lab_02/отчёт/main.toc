@@ -7,15 +7,16 @@
 \contentsline {subsection}{\numberline {1.4}Анализ алгоритма Винограда}{5}{subsection.1.4}%
 \contentsline {section}{\numberline {2}Конструкторская часть}{6}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Описания алгоритмов}{6}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Модель вычислений}{11}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Расчёт трудоёмкости алгоритмов}{13}{subsection.2.3}%
-\contentsline {subsubsection}{\numberline {2.3.1}Стандартный алгоритм умножения матриц}{13}{subsubsection.2.3.1}%
-\contentsline {subsubsection}{\numberline {2.3.2}Алгоритм Винограда умножения матриц}{13}{subsubsection.2.3.2}%
-\contentsline {section}{\numberline {3}Технологическая часть}{15}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Требования к программному обеспечению}{15}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Средства реализации}{15}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Реализации алгоритмов}{15}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Тесты}{16}{subsection.3.4}%
-\contentsline {section}{\numberline {4}Исследовательская часть}{18}{section.4}%
-\contentsline {section}{Заключение}{20}{table.caption.11}%
-\contentsline {section}{Список использованных источников}{21}{table.caption.11}%
+\contentsline {subsection}{\numberline {2.2}Модель вычислений}{15}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Расчёт трудоёмкости алгоритмов}{16}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Стандартный алгоритм умножения матриц}{16}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}Алгоритм Винограда умножения матриц}{16}{subsubsection.2.3.2}%
+\contentsline {subsubsection}{\numberline {2.3.3}Оптимизированный алгоритм Винограда умножения матриц}{17}{subsubsection.2.3.3}%
+\contentsline {section}{\numberline {3}Технологическая часть}{19}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Требования к программному обеспечению}{19}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Средства реализации}{19}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Реализации алгоритмов}{19}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Тесты}{21}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Исследовательская часть}{23}{section.4}%
+\contentsline {section}{Заключение}{25}{table.caption.14}%
+\contentsline {section}{Список использованных источников}{26}{table.caption.14}%

@@ -1,0 +1,91 @@
+\section{Технологическая часть}
+\subsection{Требования к программному обеспечению}
+
+\hspace{1.20cm}
+На вход программе подаются массив из целых чисел и целое число, которое будет искаться в нём.
+
+На выход программа выдаёт индекс найденного в массиве элемента или -1 (на случай отсутствия искомого числа в массиве). Также в зависимости от выбранного пункта меню программа замеряет время работы алгоритмов и рисует получившиеся графики.
+
+\subsection{Средства реализации}
+
+\hspace{1.25cm}
+В связи с опытом реализации подобных задач на Python, программа была реализована на этом языке программирования. Для замеров времени была использована функция \texttt{process\_time()} из библиотеки \texttt{time}, вычисляющая процессорное время \cite{process_time}.
+
+\subsection{Реализации алгоритмов}
+
+\hspace{1.25cm}
+Ниже приведены реализации алгоритмов поиска элементов в массиве линейным способом (листинг \ref{lst:linear}) и бинарным (листинг \ref{lst:binary}) на Python.
+
+\vspace{0.25cm}
+\begin{lstlisting}[caption=реализация линейного алгоритма поиска в массиве, label=lst:linear]
+def algo_search_order(arr, x):
+    for i in range(len(arr)):
+        if arr[i] == x:
+            return i
+    return -1
+\end{lstlisting}
+
+\vspace{0.25cm}
+\begin{lstlisting}[caption=реализация бинарного алгоритма поиска в массиве, label=lst:binary]
+def algo_search_bin(arr, x):
+    arr = sorted(arr)
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if arr[mid] == x:
+            return mid
+        elif arr[mid] < x:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+\end{lstlisting}
+
+\vspace{0.25cm}
+\subsection{Тесты}
+
+\hspace{1.25cm}
+Для тестирования линейного и бинарного алгоритмов поиска элементов в массиве были составлены таблицы с входными данными (массив и искомый элемент), ожидаемым результатом (индексом) и полученным результатом от обоих способов.
+
+\vspace{0.25cm}
+\begin{table}[H]
+    \centering
+    \caption{Таблица тестов для алгоритмов поиска элементов в массиве}
+    \renewcommand{\arraystretch}{1.5} % Увеличивает расстояние между строками
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \textbf{Массив} & \textbf{Искомый элемент} & \makecell{\textbf{Ожидание}\\линейный} & \makecell{\textbf{Ожидание}\\бинарный} & \makecell{\textbf{Результат}\\линейный} & \makecell{\textbf{Результат}\\бинарный}\\
+        \hline
+        [] & 1 & -1 & -1 & -1 & -1 \\
+        \hline
+        [1, 2, 3] & 4 & -1 & -1 & -1 & -1 \\
+        \hline
+        [1, 2, 3] & 1 & 0 & 0 & 0 & 0 \\
+        \hline
+        [1, 2, 3] & 2 & 1 & 1 & 1 & 1 \\
+        \hline
+        [1, 2, 3] & 3 & 2 & 2 & 2 & 2 \\
+        \hline
+        [3, 2, 1] & 1 & 2 & 0 & 2 & 0 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+В ходе проведённого тестирования (с помощью pytest) ошибок в алгоритмах не выявлено (см листинг \ref{lst:pytest}).
+
+\vspace{0.25cm}
+\begin{lstlisting}[caption=тестирование алгоритмов с помощью pytest]
+pytest
+======================== test session starts ========================
+platform win32 -- Python 3.11.9, pytest-8.2.2, pluggy-1.5.0
+rootdir: L:\sem_5\\Algorithm_analysis\lab_03
+plugins: Faker-28.4.1
+collected 12 items                                                                                                                                                                
+
+test_algo.py .....................................             [100%]
+
+======================== 12 passed in 0.24s =========================
+\label{lst:pytest}
+\end{lstlisting}
+
+\newpage

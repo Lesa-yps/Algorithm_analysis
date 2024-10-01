@@ -3,7 +3,7 @@
 \subsection{Описания алгоритмов}
 
 \hspace{1.25cm}
-На основании теоретических измышлений были разработаны алгоритмы, вычисляющие произведение матриц тремя способами: стандартным, Винограда и оптимизированным Винограда. Блок-схемы этих алгоритмов приведены на рисунках \ref{fig:block_1_1} и \ref{fig:block_1_2} (стандартный) и рисунках \ref{fig:block_2_1}, \ref{fig:block_2_2} и \ref{fig:block_2_3} (Винограда).
+На основании теоретических измышлений были разработаны алгоритмы, вычисляющие произведение матриц тремя способами: стандартным, Винограда и оптимизированным Винограда. Блок-схемы этих алгоритмов приведены на рисунках \ref{fig:block_1_1} и \ref{fig:block_1_2} (стандартный), рисунках \ref{fig:block_2_1}, \ref{fig:block_2_2} и \ref{fig:block_2_3} (Винограда) и рисунках \ref{fig:block_3_1}, \ref{fig:block_3_2} и \ref{fig:block_3_3} (оптимизированный Винограда). Вариант оптимизации: двоичный сдвиг вместо умножения на 2; объединение III и IV частей алгоритма Винограда; вынос начальной итерации из каждого внешнего цикла.
 
 \begin{figure}[H]
     \centering
@@ -41,8 +41,30 @@
     \label{fig:block_2_3}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\textwidth]{img/block_3_1.png}
+    \caption{Блок-схема оптимизированного алгоритма Винограда умножения матриц}
+    \label{fig:block_3_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\textwidth]{img/block_3_2.png}
+    \caption{Блок-схема оптимизированного алгоритма Винограда умножения матриц (продолжение)}
+    \label{fig:block_3_2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.02\textwidth]{img/block_3_3.png}
+    \caption{Блок-схема оптимизированного алгоритма Винограда умножения матриц (продолжение 2)}
+    \label{fig:block_3_3}
+\end{figure}
+
 \subsection{Модель вычислений}
 
+\hspace{1.25cm}
 Введём правила, по которым будем оценивать ресурсную эффективность:
 
 \begin{enumerate}
@@ -104,12 +126,14 @@ else \\
 
 \subsection{Расчёт трудоёмкости алгоритмов}
 
+\hspace{1.25cm}
 Далее будет рассчитана трудоёмкость стандартного алгоритма умножения матриц, Винограда и оптимизированного алгоритма Винограда.
 
 Примечание: выделение памяти под матрицу не будет включено в расчёты трудоёмкости как не самая тяжёлая операция, присутствующая во всех алгоритмах.
 
 \subsubsection{Стандартный алгоритм умножения матриц}
 
+\hspace{1.25cm}
 Трудоёмкость стандартного алгоритма умножения матриц состоит из пяти основных компонент:
 
 \begin{enumerate}
@@ -143,6 +167,7 @@ f_{\text{стандарт}} = 2 + M * (4 + Q * (4 + 3 + N * (2 + 12))) = 14 * MN
 
 \subsubsection{Алгоритм Винограда умножения матриц}
 
+\hspace{1.25cm}
 Трудоёмкость алгоритма Винограда умножения матриц состоит из четырёх основных компонент:
 
 \begin{enumerate}
@@ -199,5 +224,107 @@ f_{\text{Виноград}} &= \frac{32}{2} MNQ + 13 MQ + \frac{19}{2} MN + \fra
 \end{cases}
 \end{aligned}
 \end{equation}
+
+\subsubsection{Оптимизированный алгоритм Винограда умножения матриц}
+
+\hspace{1.25cm}
+Вариант оптимизации: двоичный сдвиг вместо умножения на 2; объединение III и IV частей алгоритма Винограда; вынос начальной итерации из каждого внешнего цикла.
+
+Трудоёмкость оптимизированного алгоритма Винограда умножения матриц состоит из трёх основных компонент (в связи с оптимизацией --- объединением III и IV частей):
+
+\begin{enumerate}
+
+\item заполнение массива MulH
+\[
+f_{MulH} = 2 + M * (2 + 1 + 
+	\begin{cases}
+      0 & \text{л.c.(cols1 < 2)}; \\
+      8 & \text{х.c.(cols1 >= 2)}.
+    \end{cases}
+     + 2 + (N/2 - 1) * (2 + 4 + 9))
+\]
+
+\begin{equation}
+f_{MulH} = 2 - 10 * M + 15/2 * M * N + 
+	\begin{cases}
+      0 & \text{л.c.(cols1 < 2)}; \\
+      8 * M & \text{х.c.(cols1 >= 2)}.
+    \end{cases}
+\end{equation}
+
+\item заполнение массива MulV
+\[
+f_{MulV} = 2 + Q * (2 + 1 + 
+	\begin{cases}
+      0 & \text{л.c.(cols1 < 2)}; \\
+      8 & \text{х.c.(cols1 >= 2)}.
+    \end{cases}
+     + 2 + (N/2 - 1) * (2 + 4 + 9))
+\]
+
+\begin{equation}
+f_{MulV} = 2 - 10 * Q + 15/2 * Q * N + 
+	\begin{cases}
+      0 & \text{л.c.(cols1 < 2)}; \\
+      8 * Q & \text{х.c.(cols1 >= 2)}.
+    \end{cases}
+\end{equation}
+
+\item заполнение матрицы C
+\begin{multline*}
+f_C = 2 + M \cdot ( 2 + 2 + Q \cdot ( 2 + 7 + 1 + 
+  \begin{cases}
+    0 & \text{л.c.(cols1 != 1)}; \\
+    18 & \text{х.c.(cols1 != 1)}.
+  \end{cases}
++ 3 + 
+  \begin{cases}
+    0 & \text{л.c.(cols1 \vdots 2)}; \\
+    14 & \text{х.c.(cols1 \vdots 2)}.
+  \end{cases}  \\
++ 2 + \left( \frac{N}{2} - 1 \right) \cdot (2 + 24)))
+\end{multline*}
+
+\begin{multline}
+f_C = 2 + 4 \cdot M - 11 \cdot M \cdot Q + 13 \cdot NMQ + 
+	\begin{cases}
+      0 & \text{л.c.(cols1 != 1)}; \\
+      18 \cdot MQ & \text{х.c.(cols1 != 1)}.
+    \end{cases} + \\ + 
+    \begin{cases}
+      0 & \text{л.c.(cols1 \vdots 2)}; \\
+      14 \cdot MQ & \text{х.c.(cols1 \vdots 2)}.
+    \end{cases}
+\end{multline}
+
+\end{enumerate}
+
+Подставив в одну формулу, получим итоговую трудоёмкость:
+\[f_{\text{Виноград}} = 2 + f_{MulH} + f_{MulV} + f_C\]
+
+Примечание: 2 добавляется за счёт вычисления заранее cols1 / 2.
+
+\begin{multline}
+f_{\text{Виноград}} = 2 + 2 - 10 \cdot M + 15/2 \cdot MN + 
+	\begin{cases}
+      0 & \text{л.c.(cols1 < 2)}; \\
+      8 \cdot M & \text{х.c.(cols1 >= 2)}.
+    \end{cases}
+ + 2 + Q \cdot (2 + 1 + \\ + 
+	\begin{cases}
+      0 & \text{л.c.(cols1 < 2)}; \\
+      8 & \text{х.c.(cols1 >= 2)}.
+    \end{cases}
+ + 2 + (N/2 - 1) \cdot (2 + 4 + 9))
+ + 2 + 4 \cdot M - 11 \cdot M \cdot Q + 13 \cdot NMQ + \\ +
+	\begin{cases}
+      0 & \text{л.c.(cols1 != 1)}; \\
+      18 \cdot MQ & \text{х.c.(cols1 != 1)}.
+    \end{cases} + 
+    \begin{cases}
+      0 & \text{л.c.(cols1 \vdots 2)}; \\
+      14 \cdot MQ & \text{х.c.(cols1 \vdots 2)}.
+    \end{cases}
+\end{multline}
 
 \newpage
