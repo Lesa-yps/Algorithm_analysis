@@ -17,7 +17,7 @@ run: main.c create.sql lib_list.o work_db.o
 gcov: main.c create.sql lib_list.o work_db.o
 	$(CC) $(CFLAGS) $(GCOVFLAGS) -DDEBUG=0 $(SQLFLAGS) main.c -o app.exe $(LDFLAGS) lib_list.o work_db.o
 	./app.exe
-#	gcov app-main.c
+	gcov app-main.c
 
 # релизная сборка приложения
 release: main.c create.sql lib_list.o work_db.o

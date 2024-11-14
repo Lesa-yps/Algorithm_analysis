@@ -9,18 +9,21 @@
 #include <sys/stat.h> // для mkdir
 #include <string.h>
 #include <libpq-fe.h> // для работы с PostgreSQL
+#include <unistd.h>
 
 #include "lib_list.h"
 #include "work_db.h"
 
 #define MAX_LINE_LENGTH 1000
+#define BUF_SIZE 512
 #define INPUT_DATA_DIR "data"
+
 // общее количество задач
 int task_count = 0;
 // сколько каждый поток обработал заявок
-int task_count1 = 0, task_count2 = 0, task_count3 = 0;              
+int task_count0 = 0, task_count1 = 0, task_count2 = 0, task_count3 = 0, task_count4 = 0;              
 node_t *Queue1 = NULL, *Queue2 = NULL, *Queue3 = NULL, *Queue4 = NULL; // 4 очереди-списка заявок
-pthread_mutex_t mutex_queue1, mutex_queue2, mutex_queue3; // мьютексы для очередей
+pthread_mutex_t mutex_queue1, mutex_queue2, mutex_queue3, mutex_queue4; // мьютексы для очередей
 
 // функция для получения текущего значения тактов процессора
 static inline uint64_t rdtsc(void)
@@ -57,7 +60,7 @@ TaskDataTime *initialize_task(const char *filename)
         return NULL;
     }
     // инициализируются данные заявки
-    task->task_data.id = task_count;
+    task->task_data.id = task_count0;
     task->task_data.filename = strdup(filename);
     if (task->task_data.filename == NULL)
     {
@@ -78,9 +81,9 @@ TaskDataTime *initialize_task(const char *filename)
     return task;
 }
 
-// функция готовит заявки к обработке
+// функция, которую выполняет поток №0 (готовит заявки к обработке)
 // генерирует заявки с именами файлов из папки data и записывает их в очередь Queue1
-int prepare_data(void)
+void *thread_function_prepare_data(void *arg)
 {
     DIR *dir;
     struct dirent *entry;
@@ -89,18 +92,18 @@ int prepare_data(void)
     if ((dir = opendir(INPUT_DATA_DIR)) == NULL)
     {
         perror("Ошибка при открытии папки " INPUT_DATA_DIR);
-        return ERROR;
+        return NULL;
     }
 
     // проходимся по всем файлам в папке data
-    while ((entry = readdir(dir)) != NULL && task_count < MAX_PAGES)
+    while ((entry = readdir(dir)) != NULL && task_count0 < task_count)
     {
         // игнорируются специальные файлы . и ..
         if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
             continue;
 
         // буфер для полного пути
-        char full_path[512];
+        char full_path[BUF_SIZE];
         snprintf(full_path, sizeof(full_path), "%s/%s", INPUT_DATA_DIR, entry->d_name);
 
         // создание новой задачи
@@ -108,7 +111,7 @@ int prepare_data(void)
         if (task == NULL)
         {
             closedir(dir);
-            return ERROR;
+            return NULL;
         }
 
         // защита доступа к очереди 1
@@ -117,17 +120,17 @@ int prepare_data(void)
         put_elem(&Queue1, *task);
         // освобождение мьютекса первой очереди
         pthread_mutex_unlock(&mutex_queue1);
-        // считаем количество задач
-        task_count++;
+        task_count0 ++;
     }
 
     closedir(dir);
-    return OK;
+    return NULL;
 }
 
 // функция, которую выполняет поток №1 (чтение данных из файла)
 void *thread_function_read_file(void *arg)
 {
+    setbuf(stdout, NULL);
     TaskDataTime task;
     while (task_count1 < task_count)
     {
@@ -391,7 +394,11 @@ void *thread_function_write_data_DB(void *arg)
             task.time_data[5] = rdtsc();
             task_count3++;
             // кладём элемент в 4 очередь
+            // защита доступа к очереди 4n
+            pthread_mutex_lock(&mutex_queue4);
             put_elem(&Queue4, task);
+            // освобождаем мьютекс очереди 4
+            pthread_mutex_unlock(&mutex_queue4);
         }
         else
             // освобождаем мьютекс очереди 3
@@ -440,9 +447,10 @@ void calc_print_time_res(TimeStatisticData time_stat, FILE *file, const char *he
             help_str, tmin_ms, tmax_ms, tavg_ms, tmed_ms);
 }
 
-// функция обрабатывает (и очищает) итоговую очередь, обрабатывая замеры времени и выводя результаты в файл measure.txt
-int calc_time(void)
+// функция, которую выполняет поток №4 (обрабатывает (и очищает) итоговую очередь, обрабатывая замеры времени и выводя результаты в файл measure.txt)
+void *thread_function_calc_time(void *arg)
 {
+    setbuf(stdout, NULL);
     TimeStatisticData tw1, tw2, tw3, tq2, tq3;
     tw1.arr = malloc(task_count * sizeof(uint64_t));
     tw2.arr = malloc(task_count * sizeof(uint64_t));
@@ -453,24 +461,36 @@ int calc_time(void)
     if (file == NULL)
     {
         perror("Ошибка открытия файла measure.txt");
-        return ERROR;
+        return NULL;
     }
-    int n = 0;
     TaskDataTime task;
-    // вычисление массивов времён для последующей обработки (в тиках)
-    while (get_elem(&Queue4, &task) == OK)
+    while (task_count4 < task_count)
     {
-        // вычисляется {tmin, tmax, tavg, tmed}
-        // 1) затраченное i-м обрабатывающим устройством на обработку одной заявки
-        tw1.arr[n] = task.time_data[1] - task.time_data[0];
-        tw2.arr[n] = task.time_data[3] - task.time_data[2];
-        tw3.arr[n] = task.time_data[5] - task.time_data[4];
-        // 2) время проведённое заявкой в очередях 2 и 3
-        tq2.arr[n] = task.time_data[2] - task.time_data[1];
-        tq3.arr[n] = task.time_data[4] - task.time_data[3];
-        n++;
-        // освобождение памяти из-под задачи
-        free_mem_task(&task);
+        // защита доступа к очереди 4
+        pthread_mutex_lock(&mutex_queue4);
+        // вычисление массивов времён для последующей обработки (в тиках)
+        if (get_elem(&Queue4, &task) == OK)
+        {
+            // освобождаем мьютекс очереди 4
+            pthread_mutex_unlock(&mutex_queue4);
+            // вычисляется {tmin, tmax, tavg, tmed}
+            // 1) затраченное i-м обрабатывающим устройством на обработку одной заявки
+            tw1.arr[task_count4] = task.time_data[1] - task.time_data[0];
+            tw2.arr[task_count4] = task.time_data[3] - task.time_data[2];
+            tw3.arr[task_count4] = task.time_data[5] - task.time_data[4];
+            // 2) время проведённое заявкой в очередях 2 и 3
+            tq2.arr[task_count4] = task.time_data[2] - task.time_data[1];
+            tq3.arr[task_count4] = task.time_data[4] - task.time_data[3];
+            task_count4 ++;
+            // освобождение памяти из-под задачи
+            free_mem_task(&task);
+        }
+        else
+        {
+            // освобождаем мьютекс очереди 4
+            pthread_mutex_unlock(&mutex_queue4);
+            sleep(1);
+        }
     }
     // вычисление искомых значений и запись в файл
     calc_print_time_res(tw1, file, "Устройство №1\n");
@@ -485,25 +505,62 @@ int calc_time(void)
     free(tq2.arr);
     free(tq3.arr);
     fclose(file);
-    return OK;
+    return NULL;
+}
+
+
+// считает сколько файлов в папке
+int count_files_in_directory(const char *dir_path)
+{
+    int file_count = 0;
+    struct dirent *entry;
+    struct stat file_stat;
+    DIR *dir = opendir(dir_path);
+    if (dir == NULL)
+    {
+        perror("Ошибка открытия папки");
+        return -1;
+    }
+    while ((entry = readdir(dir)) != NULL)
+    {
+        // пропускаем "." и ".."
+        if (entry->d_name[0] == '.' && (entry->d_name[1] == '\0' || (entry->d_name[1] == '.' && entry->d_name[2] == '\0')))
+            continue;
+        // путь к файлу = путь к директории / имя файла
+        char full_path[BUF_SIZE];
+        snprintf(full_path, sizeof(full_path), "%s/%s", dir_path, entry->d_name);
+        // проверка: является ли элемент файлом?
+        if (stat(full_path, &file_stat) == 0 && S_ISREG(file_stat.st_mode))
+            file_count++;
+    }
+    closedir(dir);
+    return file_count;
 }
 
 
 // главная функция
 int main(void)
 {
-    pthread_t thread1, thread2, thread3;
+    pthread_t thread0, thread1, thread2, thread3, thread4;
+
+    // считает сколько файлов в папке
+    task_count = count_files_in_directory(INPUT_DATA_DIR);
+    if (task_count < 0)
+        return ERROR;
 
     // инициализация мьютексов
     pthread_mutex_init(&mutex_queue1, NULL);
     pthread_mutex_init(&mutex_queue2, NULL);
     pthread_mutex_init(&mutex_queue3, NULL);
+    pthread_mutex_init(&mutex_queue4, NULL);
 
-    // создание заявок и помещение их в очередь №1
-    if (prepare_data() != OK)
-        return ERROR;
 
     // создаём потоки
+
+    //thread_function_prepare_data(NULL);
+    // создание заявок и помещение их в очередь №1
+    pthread_create(&thread0, NULL, thread_function_prepare_data, NULL);
+
     // Стадии обработки:
     // - чтение данных из файла;
     pthread_create(&thread1, NULL, thread_function_read_file, NULL);
@@ -512,18 +569,24 @@ int main(void)
     // - запись извлеченных данных в хранилище.
     pthread_create(&thread3, NULL, thread_function_write_data_DB, NULL);
 
+    // вычисляем и выводим в файл статистику по времени
+    //pthread_create(&thread4, NULL, thread_function_calc_time, NULL);
+
+
     // ждём завершения потоков
+    pthread_join(thread0, NULL);
     pthread_join(thread1, NULL);
     pthread_join(thread2, NULL);
     pthread_join(thread3, NULL);
+    //pthread_join(thread4, NULL);
 
-    // вычисляем и выводим в файл статистику по времени
-    calc_time();
+    thread_function_calc_time(NULL);
 
     // освобождение мьютексов
     pthread_mutex_destroy(&mutex_queue1);
     pthread_mutex_destroy(&mutex_queue2);
     pthread_mutex_destroy(&mutex_queue3);
+    pthread_mutex_destroy(&mutex_queue4);
 
     return OK;
 }
