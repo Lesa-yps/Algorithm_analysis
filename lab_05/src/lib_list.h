@@ -6,14 +6,14 @@
 
 #include "const_struct.h"
 
-// Определение структуры элемента списка
+// определение структуры элемента списка
 typedef struct Node
 {
     TaskDataTime data;
     struct Node *next;
 } node_t;
 
-void free_list(node_t *Head);
+void free_list(node_t **Head);
 void put_elem(node_t **Head, TaskDataTime data);
 int get_elem(node_t **Head, TaskDataTime *data);
 

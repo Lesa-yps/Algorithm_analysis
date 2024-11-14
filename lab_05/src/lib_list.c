@@ -1,12 +1,12 @@
 #include "lib_list.h"
 
 
-void free_node(node_t **node1)
+void free_node(node_t **node)
 {
-    if (*node1 != NULL)
+    if (*node != NULL)
     {
-        free(*node1);
-        *node1 = NULL;
+        free(*node);
+        *node = NULL;
     }
 }
 
@@ -25,7 +25,7 @@ int create_node(node_t **new_node, TaskDataTime data)
     int rc = OK;
     *new_node = (node_t *)calloc(1, sizeof(node_t));
     if (*new_node == NULL)
-        rc = ERR_MEM;
+        rc = ERROR;
     else
     {
         (*new_node)->data = data;
@@ -44,7 +44,7 @@ void put_elem(node_t **Head, TaskDataTime data)
             *Head = new_node;
         else
         {
-            node_t cur = *Head;
+            node_t *cur = *Head;
             while (cur->next != NULL)
                 cur = cur->next;
             new_node->next = cur->next;

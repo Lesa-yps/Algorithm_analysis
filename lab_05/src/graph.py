@@ -1,40 +1,49 @@
-import re
 import matplotlib.pyplot as plt
+import numpy as np
 
-FILE_MEASURE = "measure"
+# данные извлекаются из файла
+def get_measurements(file_path):
+    data = {}
+    with open(file_path, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        for line in lines:
+            line = line.strip()
+            # начало нового устройства/очереди
+            if line.startswith("Устройство") or line.startswith("Очередь"):
+                current_device = line
+                data[current_device] = {}
+            # сами строки с временами
+            elif line.startswith("t"):
+                parts = line.split(", ")
+                for part in parts:
+                    metric, value = part.split(" = ")
+                    value = float(value.replace(" мс", "").strip())
+                    data[current_device][metric] = value
+    return data
 
-# проходится по файлу и вытаскивает из него данные
-def parse_benchmark_results(filename):
-    threads = []
-    times = []
-    with open(filename, 'r') as file:
-        for line in file:
-            # Ищем строки с информацией о времени выполнения
-            match_main_thread = re.search(r'Запуск на основном потоке\s+Время выполнения: ([\d\.]+)', line)
-            match_thread = re.search(r'Число потоков: (\d+)\s+Время выполнения: ([\d\.]+)', line)
-            if match_main_thread:
-                # Если это основная нить (без указания количества потоков)
-                threads.append(0)  # Основной поток обозначаем как 0
-                times.append(float(match_main_thread.group(1)))
-            elif match_thread:
-                # Если это строка с указанием количества потоков
-                threads.append(int(match_thread.group(1)))
-                times.append(float(match_thread.group(2)))
-    return threads, times
+# данные извлекаются из файла
+data = get_measurements('measure.txt')
 
-# рисует график по данным из файла
-def plot_benchmark_results(threads, times, output_file):
-    plt.figure(figsize=(10, 6))
-    plt.plot(threads, times, marker='o')
-    plt.xlabel('Число потоков')
-    plt.ylabel('Время выполнения (сек)')
-    plt.title('Зависимость времени выполнения от количества потоков')
-    plt.grid(True)
-    plt.xticks(threads)  # Устанавливаем тики на оси X соответствующими количеству потоков
-    plt.savefig(output_file)  # Сохраняем график в файл
-    print(f"График сохранён как {output_file}")
+# распределяем времена для каждой метрики
+metrics = ['tмин', 'tмакс', 'tсред', 'tмед']
+device_names = list(data.keys())
+metric_values = {metric: [] for metric in metrics}
+for device in device_names:
+    for metric in metrics:
+        metric_values[metric].append(data[device].get(metric, 0))
 
-if __name__ == "__main__":
-    filename = FILE_MEASURE + ".txt"
-    threads, times = parse_benchmark_results(filename)
-    plot_benchmark_results(threads, times, FILE_MEASURE + ".png")
+# настройки и сохранение графика
+x = np.arange(len(device_names))
+width = 0.2
+fig, ax = plt.subplots(figsize=(10, 6))
+bars = []
+for i, metric in enumerate(metrics):
+    bars.append(ax.bar(x + i * width, metric_values[metric], width, label=metric))
+ax.set_xlabel('Устройства/Очереди')
+ax.set_ylabel('Время (мс)')
+ax.set_title('Измерения времени для устройств и очередей')
+ax.set_xticks(x + width * (len(metrics) - 1) / 2)
+ax.set_xticklabels(device_names, rotation=45)
+ax.legend()
+plt.tight_layout()
+plt.savefig('measure.png')
