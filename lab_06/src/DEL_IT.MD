@@ -1,0 +1,1 @@
+https://github.com/xanderkov/ics7-aa/blob/main/lab-07/app/algorithms.py
