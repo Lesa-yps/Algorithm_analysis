@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <ctype.h>
 #include <string.h>
-#include <unistd.h> // Для использования функции sleep
 #include <fcntl.h> // Для открывания файлов
 #include <sys/stat.h> // Для mkdir
 #include <string.h>   // Для использования strstr и других функций
@@ -100,7 +99,6 @@ size_t WriteDataToFile(void *contents, size_t size, size_t nmemb, FILE *file)
 void* download_page(void* arg)
 {
     ThreadData* data = (ThreadData*) arg;
-    sleep(1); // Задержка 1 секунда перед каждым запросом
 
     // Создаем папку "data", если она не существует
     mkdir("data", 0777); // Игнорируем ошибку, если директория уже существует
@@ -120,7 +118,7 @@ void* download_page(void* arg)
 
     // Выполняем команду curl для загрузки страницы
     int result = system(curl_command);
-    if (result != 0 || result == 503) {
+    if (result != 0) {
         fprintf(stderr, "curl command failed for URL: %s\n", data->url);
         return NULL;
     }

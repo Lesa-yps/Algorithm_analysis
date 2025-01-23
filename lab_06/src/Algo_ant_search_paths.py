@@ -12,7 +12,7 @@ def init_visibil_matrix(matrix, count_places, river_direct_arr, season):
     visibil_matrix = [[0 for _ in range(count_places)] for _ in range(count_places)]
     for i in range(count_places):
         for j in range(count_places):
-            if i != j:
+            if i != j and not matrix[i][j] < 0:
                 # учитываются реки и сезоны
                 len_erge = effect_rivers_seasons(matrix[i][j], i, j, river_direct_arr, season)
                 visibil_matrix[i][j] = 1.0 / len_erge
@@ -39,8 +39,9 @@ def find_posibls_of_visit_places(pherom_matrix, visibil_matrix, paths_for_all_an
             # в уже посещённое место муравей снова не пойдёт
             posibil_places_visit_arr[place_num] = 0
     sum_ppva = sum(posibil_places_visit_arr)
-    for place_num in range(count_places):
-        posibil_places_visit_arr[place_num] /= sum_ppva
+    if sum_ppva != 0:
+        for place_num in range(count_places):
+            posibil_places_visit_arr[place_num] /= sum_ppva
     return posibil_places_visit_arr
 
 
@@ -62,6 +63,10 @@ def calc_len_path(matrix_edges, path, river_direct_arr, season):
     for i in range(0, len(path) - 1):
         start_ind = path[i]
         finish_ind = path[i + 1]
+        len_edge = matrix_edges[start_ind][finish_ind]
+        # если такого ребра нет, то маршрут не существует
+        if len_edge < 0:
+            return float("inf")
         # учитываются реки и сезоны
         len_edge = effect_rivers_seasons(matrix_edges[start_ind][finish_ind], start_ind, finish_ind, river_direct_arr, season)
         summ_len += len_edge
@@ -74,8 +79,7 @@ def calc_avg_len_edge(matrix_edges, count_places, river_direct_arr, season):
     count_edges = 0
     for i in range(count_places):
         for j in range(count_places):
-            # исключаем диагональные элементы
-            if i != j:
+            if i != j and not matrix_edges[i][j] < 0:
                 # учитываются реки и сезоны
                 len_edge = effect_rivers_seasons(matrix_edges[i][j], i, j, river_direct_arr, season)
                 summ_len_edges += len_edge
@@ -92,7 +96,9 @@ def update_pherom_matrix(matrix_edges, count_places, count_ants, paths_for_all_a
             for ant_num in range(count_ants):
                 path_this_ant = paths_for_all_ants[ant_num]
                 length = calc_len_path(matrix_edges, path_this_ant, river_direct_arr, season)
-                delta_vis += avg_len_edge / length
+                # отсекаются несуществующие пути
+                if length < float("inf"):
+                    delta_vis += avg_len_edge / length
             # испарение феромонов
             pherom_matrix[i][j] *= (1 - koef_evap)  
             # добавление новых феромонов
@@ -103,12 +109,13 @@ def update_pherom_matrix(matrix_edges, count_places, count_ants, paths_for_all_a
 
 
 # алгоритм муравьиной колонии для поиска оптимального пути
-# matrix - матрица расстояний между местами.
-# places - количество мест.
-# alpha - коэффициент влияния феромонов.
-# beta - коэффициент влияния видимости.
-# koef_evap - коэффициент испарения феромонов.
-# days - количество итераций (дней), за которые работают муравьи.
+# matrix_edges - матрица расстояний между местами
+# river_direct_arr - массив направлений рек
+# season - созон (лето или зима), меняется раз в 60 дней
+# alpha - коэффициент влияния феромонов
+# beta - коэффициент влияния видимости
+# koef_evap - коэффициент испарения феромонов
+# days - количество итераций (дней), за которые работают муравьи
 def Algo_ant_search_paths(matrix_edges, river_direct_arr, season, alpha, beta, koef_evap, days):
     # число мест
     count_places = len(matrix_edges)
@@ -136,14 +143,20 @@ def Algo_ant_search_paths(matrix_edges, river_direct_arr, season, alpha, beta, k
         # создается список посещенных мест для каждого муравья (каждый муравей начинает путь из города под своим номером)
         paths_for_all_ants = init_paths_for_all_ants(count_ants)  
         # каждый муравей строит маршрут
-        for ant_num in range(count_ants):  
+        for ant_num in range(count_ants):
+            flag_deadlock = False 
             # пока маршрут не завершен
             while len(paths_for_all_ants[ant_num]) != count_places:
                 # вычисляются вероятности выбора других мест для посещения из текущего для муравья (по формуле)
                 posibil_places_visit_arr = find_posibls_of_visit_places(pherom_matrix, visibil_matrix, paths_for_all_ants, count_places, ant_num, alpha, beta)
+                if all(value == 0 for value in posibil_places_visit_arr):
+                    flag_deadlock = True
+                    break
                 chosen_place = choose_next_place(posibil_places_visit_arr)
                 # добавление нового места в маршрут
                 paths_for_all_ants[ant_num].append(chosen_place - 1)
+            if flag_deadlock:
+                continue
             # вычисление длины маршрута
             len_path = calc_len_path(matrix_edges, paths_for_all_ants[ant_num], river_direct_arr, season)  
             # обновление лучшего маршрута

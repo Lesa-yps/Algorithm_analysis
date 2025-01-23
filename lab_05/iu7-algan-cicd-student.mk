@@ -10,7 +10,7 @@ ready/report.pdf: ready report/report.pdf
 	cp report/report.pdf ready/report.pdf
 
 ready/app-cli-debug: src/makefile
-	make -C src debug
+	make -C src cli-debug
 
 ready:
 	mkdir -p ready

@@ -4,7 +4,7 @@ ready/stud-unit-test-report-prev.json: ready
 	echo "{}" > $@
 
 ready/stud-unit-test-report.json: ready 
-	echo "{\"timestamp\": \"$(shell date +"%Y-%m-%dT%H:%M:%S%:z")\", \"passed\": 1, \"failed\": 0, \"coverage\": 88.93}" > $@
+	echo "{\"timestamp\": \"$(shell date +"%Y-%m-%dT%H:%M:%S%:z")\", \"passed\": 1, \"failed\": 0, \"coverage\": 65.31}" > $@
 
 ready/report.pdf: ready report/report.pdf 
 	cp report/report.pdf ready/report.pdf

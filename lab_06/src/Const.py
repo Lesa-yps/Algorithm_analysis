@@ -14,7 +14,7 @@ RUN_PARAM = 4
 EXIT = 0
 
 DEF_DIR = "data"
-DEF_FILENAME = "data/ancient_Rus.txt"
+DEF_FILENAME = "data/city_Rus_1.txt"
 
 MIN_PHEROM = 0.01
 

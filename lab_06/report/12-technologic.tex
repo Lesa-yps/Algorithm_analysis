@@ -2,90 +2,137 @@
 \subsection{Требования к программному обеспечению}
 
 \hspace{1.20cm}
-На вход программе подаются массив из целых чисел и целое число, которое будет искаться в нём.
+\underline{Входные данные:}\\
+Программа принимает файл, содержащий матрицу расстояний между городами, где значение -1 означает отсутствие пути. Также задается список направлений рек  и текущий сезон, влияющий на затраты на прохождение рек (зима или лето). Для решения задачи муравьиным алгоритмом дополнительно вводятся следующие параметры:
 
-На выход программа выдаёт индекс найденного в массиве элемента или -1 (на случай отсутствия искомого числа в массиве). Также в зависимости от выбранного пункта меню программа замеряет время работы алгоритмов и рисует получившиеся графики.
+\begin{enumerate}[label=\arabic*)]
+  \item alpha -- параметр влияния длины пути;
+  \item beta -- параметр влияния феромона;
+  \item koef\_evap -- коэффициент испарения феромона;
+  \item days -- количество дней гуляния муравьёв.
+\end{enumerate}
+
+\underline{Выходные данные:}\\
+На выходе программа предоставляет кратчайший незамкнутый маршрут обхода всех городов и его длину, вычисленные алгоритмом полного перебора или муравьиным алгоритмом.
 
 \subsection{Средства реализации}
 
 \hspace{1.25cm}
-В связи с опытом реализации подобных задач на Python, программа была реализована на этом языке программирования. Для замеров времени была использована функция \texttt{process\_time()} из библиотеки \texttt{time}, вычисляющая процессорное время \cite{process_time}.
+В связи с опытом реализации подобных задач на Python, программа была реализована на этом языке программирования.
 
 \subsection{Реализации алгоритмов}
 
 \hspace{1.25cm}
-Ниже приведены реализации алгоритмов поиска элементов в массиве линейным способом (листинг \ref{lst:linear}) и бинарным (листинг \ref{lst:binary}) на Python.
+Ниже приведена реализация алгоритма коммивояжёра полным перебором (листинг~\ref{lst:full}) и муравьиным алгоритмом (листинг~\ref{lst:main_ant_algo}) на Python.
 
 \vspace{0.25cm}
-\begin{lstlisting}[caption=реализация линейного алгоритма поиска в массиве, label=lst:linear]
-def algo_search_order(arr, x):
-    for i in range(len(arr)):
-        if arr[i] == x:
-            return i
-    return -1
+\begin{lstlisting}[caption=реализации алгоритма коммивояжёра полным перебором, label=lst:full]
+def Algo_full_search_paths(matrix_paths, river_direct_arr, season):
+    n = len(matrix_paths)
+    varios_paths_id_arr = [i for i in range(n)]
+    all_combinations_paths = list()
+
+    for path in it.permutations(varios_paths_id_arr):
+        all_combinations_paths.append(list(path))
+
+    min_len_path = float("+inf")
+    min_ind_path = -1
+
+    for j in range(len(all_combinations_paths)):
+        is_path_exist = True
+        path = all_combinations_paths[j]
+
+        len_path = 0
+        i = 0
+        while is_path_exist and i < (n - 1):
+            ind_start_city = path[i]
+            ind_finish_city = path[i + 1]
+            len_erge = matrix_paths[ind_start_city][ind_finish_city]
+            if len_erge < 0:
+                is_path_exist = False
+            else:
+                len_path += effect_rivers_seasons(len_erge, ind_start_city, ind_finish_city, river_direct_arr, season)
+                i += 1
+        
+        if is_path_exist and len_path < min_len_path:
+            min_len_path = len_path
+            min_ind_path = j
+
+    if min_ind_path == -1:
+        res_path = list()
+    else:
+        res_path = all_combinations_paths[min_ind_path]
+    
+    return min_len_path, res_path
 \end{lstlisting}
 
 \vspace{0.25cm}
-\begin{lstlisting}[caption=реализация бинарного алгоритма поиска в массиве, label=lst:binary]
-def algo_search_bin(arr, x):
-    arr = sorted(arr)
-    left, right = 0, len(arr) - 1
-    while left <= right:
-        mid = left + (right - left) // 2
-        if arr[mid] == x:
-            return mid
-        elif arr[mid] < x:
-            left = mid + 1
-        else:
-            right = mid - 1
-    return -1
+
+
+\begin{lstlisting}[caption=реализации алгоритма коммивояжёра муравьиным алгоритмом, label=lst:main_ant_algo]
+def Algo_ant_search_paths(matrix_edges, river_direct_arr, season, alpha, beta, koef_evap, days):
+    count_places = len(matrix_edges)
+    min_path = list()
+    min_len_path = float("inf")
+    avg_len_edge = calc_avg_len_edge(matrix_edges, count_places, river_direct_arr, season)
+    pherom_matrix = init_pherom_matrix(count_places)
+    count_ants = count_places
+    visibil_matrix = init_visibil_matrix(matrix_edges, count_places, river_direct_arr, season)
+
+    for day_num in range(days):
+        if day_num != 0 and day_num % CHANGE_SEASON == 0:
+            season = (season + 1) % 2
+            visibil_matrix = init_visibil_matrix(matrix_edges, count_places, river_direct_arr, season)
+            avg_len_edge = calc_avg_len_edge(matrix_edges, count_places, river_direct_arr, season)
+        
+        paths_for_all_ants = init_paths_for_all_ants(count_ants)
+
+        for ant_num in range(count_ants):
+            flag_deadlock = False
+            while len(paths_for_all_ants[ant_num]) != count_places:
+                possibil_places_visit_arr = find_posibls_of_visit_places(pherom_matrix, visibil_matrix, paths_for_all_ants, count_places, ant_num, alpha, beta)
+                if all(value == 0 for value in possibil_places_visit_arr):
+                    flag_deadlock = True
+                    break
+                chosen_place = choose_next_place(possibil_places_visit_arr)
+                paths_for_all_ants[ant_num].append(chosen_place - 1)
+
+            if flag_deadlock:
+                continue
+
+            len_path = calc_len_path(matrix_edges, paths_for_all_ants[ant_num], river_direct_arr, season)
+            if len_path < min_len_path:
+                min_len_path = len_path
+                min_path = paths_for_all_ants[ant_num]
+
+        pherom_matrix = update_pherom_matrix(matrix_edges, count_places, count_ants, paths_for_all_ants, pherom_matrix, avg_len_edge, koef_evap, river_direct_arr, season)
+    
+    return min_len_path, min_path
 \end{lstlisting}
+
 
 \vspace{0.25cm}
 \subsection{Тесты}
 
 \hspace{1.25cm}
-Для тестирования линейного и бинарного алгоритмов поиска элементов в массиве были составлены таблицы с входными данными (массив и искомый элемент), ожидаемым результатом (индексом) и полученным результатом от обоих способов.
+Для тестирования муравьиного алгоритма (МА) и алгоритма полного перебора (АПП) были составлены таблицы с входными данными, ожидаемыми результатами и успехом выполнения каждого алгоритма. Входные данные включают матрицу расстояний между точками, направления рек и сезон (0 -- лето, 1 -- зима).
 
 \vspace{0.25cm}
 \begin{table}[H]
     \centering
-    \caption{Таблица тестов для алгоритмов поиска элементов в массиве}
+    \caption{Таблица тестов для алгоритмов поиска кратчайшего пути}
     \renewcommand{\arraystretch}{1.5} % Увеличивает расстояние между строками
-    \begin{tabular}{|c|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|}
         \hline
-        \textbf{Массив} & \textbf{Искомый элемент} & \makecell{\textbf{Ожидание}\\линейный} & \makecell{\textbf{Ожидание}\\бинарный} & \makecell{\textbf{Результат}\\линейный} & \makecell{\textbf{Результат}\\бинарный}\\
+        \textbf{Входные данные} & \textbf{Ожидаемый результат} & \textbf{Прохождение АПП} & \textbf{Прохождение МА} \\
         \hline
-        [] & 1 & -1 & -1 & -1 & -1 \\
+        \makecell{0 3 -1 7 \\ 3 0 5 6 \\ 10 -1 0 5 \\ -1 -1 2 0 \\ --- \\ 0 2 \\ 1 3 \\ --- \\ 0} & \makecell{Путь = [0, 1, 3, 2] \\ Длина = 8.0} & \textbf{Успех} & \textbf{Успех} \\
         \hline
-        [1, 2, 3] & 4 & -1 & -1 & -1 & -1 \\
-        \hline
-        [1, 2, 3] & 1 & 0 & 0 & 0 & 0 \\
-        \hline
-        [1, 2, 3] & 2 & 1 & 1 & 1 & 1 \\
-        \hline
-        [1, 2, 3] & 3 & 2 & 2 & 2 & 2 \\
-        \hline
-        [3, 2, 1] & 1 & 2 & 0 & 2 & 0 \\
+        \makecell{0 -1 920 600 500 \\ 850 0 500 700 170 \\ -1 500 0 -1 800 \\ 600 700 50 0 450 \\ 600 100 800 -1 0 \\ --- \\ 0 3 \\ --- \\ 0} & \makecell{Путь = [0, 3, 2, 1, 4] \\ Длина = 1020.0} & \textbf{Успех} & \textbf{Успех} \\
         \hline
     \end{tabular}
 \end{table}
 
-В ходе проведённого тестирования (с помощью pytest) ошибок в алгоритмах не выявлено (см листинг \ref{lst:pytest}).
-
-\vspace{0.25cm}
-\begin{lstlisting}[caption=тестирование алгоритмов с помощью pytest]
-pytest
-======================== test session starts ========================
-platform win32 -- Python 3.11.9, pytest-8.2.2, pluggy-1.5.0
-rootdir: L:\sem_5\\Algorithm_analysis\lab_03
-plugins: Faker-28.4.1
-collected 12 items                                                                                                                                                                
-
-test_algo.py .....................................             [100%]
-
-======================== 12 passed in 0.24s =========================
-\end{lstlisting}
-\label{lst:pytest}
+В ходе проведённого тестирования ошибок в алгоритмах не выявлено.
 
 \newpage

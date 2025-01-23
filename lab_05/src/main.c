@@ -557,7 +557,6 @@ int main(void)
 
     // создаём потоки
 
-    //thread_function_prepare_data(NULL);
     // создание заявок и помещение их в очередь №1
     pthread_create(&thread0, NULL, thread_function_prepare_data, NULL);
 
@@ -570,7 +569,7 @@ int main(void)
     pthread_create(&thread3, NULL, thread_function_write_data_DB, NULL);
 
     // вычисляем и выводим в файл статистику по времени
-    //pthread_create(&thread4, NULL, thread_function_calc_time, NULL);
+    pthread_create(&thread4, NULL, thread_function_calc_time, NULL);
 
 
     // ждём завершения потоков
@@ -578,9 +577,7 @@ int main(void)
     pthread_join(thread1, NULL);
     pthread_join(thread2, NULL);
     pthread_join(thread3, NULL);
-    //pthread_join(thread4, NULL);
-
-    thread_function_calc_time(NULL);
+    pthread_join(thread4, NULL);
 
     // освобождение мьютексов
     pthread_mutex_destroy(&mutex_queue1);

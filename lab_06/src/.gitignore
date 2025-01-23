@@ -5,3 +5,4 @@
 *.gcno
 *.o
 .vscode
+__pycache__

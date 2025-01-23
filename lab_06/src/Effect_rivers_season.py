@@ -5,7 +5,7 @@ def effect_rivers_seasons(len_erge, i1, i2, river_direct_arr, season):
     # если есть река между городами
     if (i1, i2) in river_direct_arr or (i2, i1) in river_direct_arr:
         if season == SUMMER:
-            # летом по течению реки в 4 раза быстрее, а против течения в 2 раза медленнее
+            # летом по течению реки в 2 раза быстрее, а против течения в 4 раза медленнее
             if (i1, i2) in river_direct_arr:
                 len_erge /= 2
             else:

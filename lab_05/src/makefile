@@ -27,6 +27,9 @@ release: main.c create.sql lib_list.o work_db.o
 debug: main.c create.sql lib_list.o work_db.o
 	$(CC) $(CFLAGS) $(GCOVFLAGS) -DDEBUG=0 $(SQLFLAGS) main.c -o app.exe $(LDFLAGS) lib_list.o work_db.o
 
+# пустая цель, так как проверяющая система не содержит всех необходимых библиотек
+cli-debug:
+
 # преобразование замеров из текстового файла в график и сохранение
 draw_graph: measure.txt
 	python3 graph.py

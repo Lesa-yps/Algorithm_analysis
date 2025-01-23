@@ -9,6 +9,8 @@
 \usepackage[english,russian]{babel} % Русский и английский языки
 \usepackage{mathptmx}          % Используем шрифт Times New Roman вместо Computer Modern
 
+\usepackage{enumitem} % Пакет для настройки списков
+
 \usepackage{fancyhdr} % Для настройки колонтитулов (опционально)
 
 \usepackage{amsmath,amsfonts,amssymb} % Математические символы
@@ -46,10 +48,6 @@
     top=20mm,
     bottom=20mm
 }
-
-% Настройка стиля заголовков
-\titleformat{\section}{\large\bfseries}{\thesection.}{1em}{}
-\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{1em}{}
 
 \usepackage{caption} % Для настройки подписей
 \captionsetup[figure]{justification=centering} % Центрирование подписей к рисункам
